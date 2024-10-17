@@ -39,7 +39,7 @@ func (d *Database) Create(c ClassifiedAd) (id uint, err error) {
 }
 
 func (d *Database) Get(id uint) (c *ClassifiedAd, err error) {
-	row := ClassifiedAdRow{ClassifiedAd: *c}
+	row := &ClassifiedAdRow{}
 	tx := d.DB.Find(row, id)
-	return c, tx.Error
+	return &row.ClassifiedAd, tx.Error
 }
