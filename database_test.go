@@ -20,3 +20,21 @@ func TestDatabase_Create(t *testing.T) {
 
 	assert.Equal(t, coolChair, *ad)
 }
+
+func TestDatabase_Update(t *testing.T) {
+	d := NewDatabase()
+
+	coolChair := ClassifiedAd{Title: "Cool chair", Body: "You can sit on it, it's incredible !", Price: 1000}
+	id, err := d.Create(coolChair)
+	require.NoError(t, err)
+
+	coolChair.Price = 900
+	err = d.Update(id, coolChair)
+	require.NoError(t, err)
+
+	ad, err := d.Get(id)
+	require.NoError(t, err)
+	require.NotNil(t, ad)
+
+	assert.Equal(t, 900, ad.Price)
+}

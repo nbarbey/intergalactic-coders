@@ -43,3 +43,9 @@ func (d *Database) Get(id uint) (c *ClassifiedAd, err error) {
 	tx := d.DB.Find(row, id)
 	return &row.ClassifiedAd, tx.Error
 }
+
+func (d *Database) Update(id uint, c ClassifiedAd) error {
+	row := ClassifiedAdRow{Model: gorm.Model{ID: id}, ClassifiedAd: c}
+	tx := d.DB.Save(&row)
+	return tx.Error
+}
