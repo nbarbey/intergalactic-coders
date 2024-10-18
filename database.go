@@ -49,3 +49,12 @@ func (d *Database) Update(id uint, c ClassifiedAd) error {
 	tx := d.DB.Save(&row)
 	return tx.Error
 }
+
+func (d *Database) List() (ads []ClassifiedAd, err error) {
+	var rows []ClassifiedAdRow
+	tx := d.DB.Find(&rows)
+	for _, row := range rows {
+		ads = append(ads, row.ClassifiedAd)
+	}
+	return ads, tx.Error
+}
