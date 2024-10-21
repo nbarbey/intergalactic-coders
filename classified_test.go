@@ -25,4 +25,5 @@ func TestPublishAd(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Len(t, ads, 1)
+	assert.Equal(t, "Blue Jeans", ads[0].Title)
 }

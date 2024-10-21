@@ -7,6 +7,19 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestDatabase_Get(t *testing.T) {
+	d := NewDatabase()
+
+	tx := d.DB.Exec(`insert into classified_ad_rows (id, created_at, title, body, price) values (10 , date(), "New chair", "Almost new, only one leg is missing", 1000)`)
+	require.NoError(t, tx.Error)
+
+	ad, err := d.Get(10)
+	require.NoError(t, err)
+	require.NotNil(t, ad)
+
+	assert.Equal(t, ClassifiedAd{Title: "New chair", Body: "Almost new, only one leg is missing", Price: 1000}, *ad)
+}
+
 func TestDatabase_Create(t *testing.T) {
 	d := NewDatabase()
 
