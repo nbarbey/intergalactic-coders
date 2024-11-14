@@ -12,20 +12,25 @@ func (a ClassifiedAd) Matches(word string) bool {
 }
 
 type Application struct {
+	http *HTTP
+	*UseCases
+}
+
+type UseCases struct {
 	ads []ClassifiedAd
 }
 
-func (a *Application) ListAds() ([]ClassifiedAd, error) {
-	return a.ads, nil
+func (u *UseCases) ListAds() ([]ClassifiedAd, error) {
+	return u.ads, nil
 }
 
-func (a *Application) Publish(ad ClassifiedAd) error {
-	a.ads = append(a.ads, ad)
+func (u *UseCases) Publish(ad ClassifiedAd) error {
+	u.ads = append(u.ads, ad)
 	return nil
 }
 
-func (a *Application) Search(word string) (ads []ClassifiedAd, err error) {
-	for _, ad := range a.ads {
+func (u *UseCases) Search(word string) (ads []ClassifiedAd, err error) {
+	for _, ad := range u.ads {
 		if ad.Matches(word) {
 			ads = append(ads, ad)
 		}
@@ -33,6 +38,14 @@ func (a *Application) Search(word string) (ads []ClassifiedAd, err error) {
 	return ads, nil
 }
 
+func (a *Application) Start() {
+
+}
+
 func NewApplication() *Application {
-	return &Application{}
+	u := &UseCases{}
+	return &Application{
+		UseCases: u,
+		http:     NewHTTP(u),
+	}
 }
